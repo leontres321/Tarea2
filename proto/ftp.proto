@@ -3,7 +3,7 @@ syntax = "proto3";
 package ftp;
 
 //Cambiar cuando se pase a la maquina
-option go_package  = "/run/media/leoarco/94AC888BAC886A16/Semestre_en_casita_equisde/INF343-Sistemas-distribuidos/Tareas/T2";
+option go_package = "/home/leoarco/go/src/Tarea2"
 
 message Chunk {
   oneof data {
