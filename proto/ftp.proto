@@ -3,24 +3,27 @@ syntax = "proto3";
 package ftp;
 
 //Cambiar cuando se pase a la maquina
-option go_package = "/home/leoarco/go/src/Tarea2";
+option go_package = "/pb";
 
+service FTP{
+  rpc Enviar(Chunk) returns (Respuesta);
+}
 message Chunk {
-  oneof data {
-    BookData info = 1;
-    bytes chunk = 2;
-  }
+  BookData info = 1;
+  bytes chunk = 2;
+  bool last = 3;
+  bool first = 4;
 }
 
 message BookData{
-  string sender = 1;
-  string name = 2;
-  string type = 3;
+  string name = 1;
+  uint64 parts = 2;
+  uint64 this_part = 3;
 }
 
-message ChunkResponse{
-  string id = 1;
-  uint32 size = 2;
+message Respuesta{
+  uint32 id = 1;
+  bool gud = 2;
 }
 
 
