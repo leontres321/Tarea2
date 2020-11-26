@@ -7,9 +7,9 @@ import (
 type DataNode struct {
 }
 
-func (s *Datanode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
+func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	var respuesta Respuesta
-	respuesta.id = 1
-	respuesta.gud = true
+	respuesta.Id = 1
+	respuesta.Gud = true
 	return &respuesta, nil
 }
