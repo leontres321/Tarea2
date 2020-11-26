@@ -88,9 +88,9 @@ func Carga(algoritmo int8) {
 
 		var mensaje pb.Chunk
 
-		mensaje.Info.Name = fileName
-		mensaje.Info.Parts = totalParts
-		mensaje.Info.ThisPart = i + 1
+		mensaje.Name = fileName
+		mensaje.Parts = totalParts
+		mensaje.ThisPart = i + 1
 
 		mensaje.Chunk = partBuffer
 		mensaje.Last = false
