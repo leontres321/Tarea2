@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func Run(int_eleccion int8) {
+func Run(int_eleccion int8, algoritmo int8) {
 	var eleccion string
 
 	if int_eleccion == 3 {

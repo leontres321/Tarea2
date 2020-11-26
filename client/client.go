@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func Run(int_eleccion int8) {
+func Run(int_eleccion int8, algoritmo int8) {
 	var eleccion string
 
 	if int_eleccion == 1 {
@@ -21,13 +21,13 @@ func Run(int_eleccion int8) {
 	fmt.Printf("Corriendo cliente como: %s", eleccion)
 
 	if int_eleccion == 1 {
-		Carga()
+		Carga(algoritmo)
 	} else {
-		Descarga()
+		Descarga(algoritmo)
 	}
 }
 
-func Carga() {
+func Carga(algoritmo int8) {
 	const FILECHUNK = 250000 //1 * (1 << 18)
 
 	var nombre string
@@ -75,7 +75,7 @@ func Carga() {
 
 }
 
-func Descarga() {
+func Descarga(algoritmo int8) {
 	var nombre string
 	var partes uint64
 
