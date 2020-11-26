@@ -7,6 +7,9 @@ import (
 	"math"
 	"os"
 	"strconv"
+	"golang.org/x/net/context"
+	"Tarea2/pb"
+	"google.golang.org/grpc"
 )
 
 func Run(int_eleccion int8, algoritmo int8) {
@@ -32,6 +35,17 @@ func Carga(algoritmo int8) {
 
 	var nombre string
 	var dir_libros string = "./libros/"
+
+	var conn* grpc.Client.conn
+
+	conn, err := grpc.Dial("dist41:9000",grpc.WithInsecure())
+
+	if err != nil{
+		fmt.Printf(err)
+		os.Exit(1)
+	}
+
+	c := pb.NewFTPClient(conn)
 
 	fmt.Printf("\nIngrese el nombre del libro para subir: ")
 	fmt.Scanf("%s", &nombre)
@@ -61,7 +75,8 @@ func Carga(algoritmo int8) {
 		file.Read(partBuffer)
 
 		fileName := nombre + "_" + strconv.FormatUint(i+1, 10)
-		_, err := os.Create(fileName)
+
+		/*_, err := os.Create(fileName)
 
 		if err != nil {
 			fmt.Println(err)
@@ -69,8 +84,33 @@ func Carga(algoritmo int8) {
 		}
 
 		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
+		*/
+
+		var mensaje pb.Chunk
+
+		Chunk.info.name = fileName
+		Chunk.info.parts = totalParts
+		Chunk.info.this_part = i + 1
+
+		Chunk.bytes = partBuffer
+		Chunk.last = false
+		if i == totalParts - 1 {
+			Chunk.last = true
+		}
+		Chunk.first = true
+		if i != 0 {
+			Chunk.first = false
+		}
 
 		//Aca se puede enviar el chunk
+		resp, err := c.Enviar(context.Background(), &mensaje)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		fmt.Println(resp.gud)
 	}
 
 }
@@ -79,7 +119,7 @@ func Descarga(algoritmo int8) {
 	var nombre string
 	var partes uint64
 
-	fmt.Println("\nIngrese el nombre del libro a bajar: ")
+	fmt.Printf("\nIngrese el nombre del libro a bajar: ")
 	fmt.Scanf("%s", &nombre)
 
 	//Preguntar a NameNode si existe y preguntar cantidad de partes
