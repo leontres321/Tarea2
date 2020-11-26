@@ -34,7 +34,7 @@ func DataNode(algoritmo int8) {
 		os.Exit(1)
 	}
 
-	L := pb.DataNode{}
+	L := pb.FTPServer{}
 	Server1 := grpc.NewServer()
 	pb.RegisterFTPServer(Server1, &L)
 

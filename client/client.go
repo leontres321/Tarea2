@@ -1,15 +1,15 @@
 package client
 
 import (
+	"Tarea2/pb"
 	"bufio"
 	"fmt"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 	"io/ioutil"
 	"math"
 	"os"
 	"strconv"
-	"golang.org/x/net/context"
-	"Tarea2/pb"
-	"google.golang.org/grpc"
 )
 
 func Run(int_eleccion int8, algoritmo int8) {
@@ -36,11 +36,11 @@ func Carga(algoritmo int8) {
 	var nombre string
 	var dir_libros string = "./libros/"
 
-	var conn* grpc.Client.conn
+	var conn *grpc.ClientConn
 
-	conn, err := grpc.Dial("dist41:9000",grpc.WithInsecure())
+	conn, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
 
-	if err != nil{
+	if err != nil {
 		fmt.Printf(err)
 		os.Exit(1)
 	}
@@ -94,7 +94,7 @@ func Carga(algoritmo int8) {
 
 		Chunk.bytes = partBuffer
 		Chunk.last = false
-		if i == totalParts - 1 {
+		if i == totalParts-1 {
 			Chunk.last = true
 		}
 		Chunk.first = true
