@@ -38,7 +38,7 @@ func Carga(algoritmo int8) {
 
 	var conn *grpc.ClientConn
 
-	conn, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
+	conn, err := grpc.Dial("dist43:9000", grpc.WithInsecure())
 
 	if err != nil {
 		fmt.Println(err)
