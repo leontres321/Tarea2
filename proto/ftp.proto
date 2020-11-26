@@ -9,16 +9,12 @@ service FTP{
   rpc Enviar(Chunk) returns (Respuesta);
 }
 message Chunk {
-  BookData info = 1;
   bytes chunk = 2;
   bool last = 3;
   bool first = 4;
-}
-
-message BookData{
-  string name = 1;
-  uint64 parts = 2;
-  uint64 this_part = 3;
+  string name = 5;
+  uint64 parts = 6;
+  uint64 this_part = 7;
 }
 
 message Respuesta{
