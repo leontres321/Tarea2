@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"io/ioutil"
+	//"io/ioutil"
 	"math"
 	"os"
 	"strconv"
@@ -41,7 +41,7 @@ func Carga(algoritmo int8) {
 	conn, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
 
 	if err != nil {
-		fmt.Printf(err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
@@ -88,18 +88,18 @@ func Carga(algoritmo int8) {
 
 		var mensaje pb.Chunk
 
-		Chunk.info.name = fileName
-		Chunk.info.parts = totalParts
-		Chunk.info.this_part = i + 1
+		mensaje.Info.Name = fileName
+		mensaje.Info.Parts = totalParts
+		mensaje.Info.ThisPart = i + 1
 
-		Chunk.bytes = partBuffer
-		Chunk.last = false
+		mensaje.Chunk = partBuffer
+		mensaje.Last = false
 		if i == totalParts-1 {
-			Chunk.last = true
+			mensaje.Last = true
 		}
-		Chunk.first = true
+		mensaje.First = true
 		if i != 0 {
-			Chunk.first = false
+			mensaje.First = false
 		}
 
 		//Aca se puede enviar el chunk
@@ -110,7 +110,7 @@ func Carga(algoritmo int8) {
 			os.Exit(1)
 		}
 
-		fmt.Println(resp.gud)
+		fmt.Println(resp.Gud)
 	}
 
 }

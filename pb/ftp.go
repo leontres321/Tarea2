@@ -5,6 +5,7 @@ import (
 )
 
 type DataNode struct {
+	hola int8
 }
 
 func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
@@ -13,3 +14,5 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	respuesta.Gud = true
 	return &respuesta, nil
 }
+
+func (s *DataNode) mustEmbedUnimplementedFTPServer() {}
