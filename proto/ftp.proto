@@ -2,24 +2,51 @@ syntax = "proto3";
 
 package ftp;
 
-//Cambiar cuando se pase a la maquina
 option go_package = "/pb";
 
 service FTP{
   rpc Enviar(Chunk) returns (Respuesta);
+  rpc Descargar(Nombre) returns (Chunk);
 }
+
+service FTPDistribuido{
+  rpc EnviarD(Chunk) returns (Respuesta);
+  rpc DescargarD(Nombre) returns (Chunk);
+  rpc AvisoEscrituraD(Aviso) returns (Respuesta);
+}
+
+service LOG{
+  rpc EnviarPropuesta(Propuesta) returns (Propuesta);
+  rpc SolicitarUbicacion(Nombre) returns (Propuesta);
+}
+
+service LOGDistribuido{
+  rpc EnviarPropuestaD(Propuesta) returns (Propuesta);
+  rpc SolicitarUbicacionD(Nombre) returns (Propuesta);
+}
+
 message Chunk {
   bytes chunk = 2;
   bool last = 3;
-  bool first = 4;
+  bool cliente = 4;
   string name = 5;
   uint64 parts = 6;
   uint64 this_part = 7;
 }
 
 message Respuesta{
-  uint32 id = 1;
-  bool gud = 2;
+  bool gud = 1;
 }
 
+message Nombre{
+  string text = 1;
+}
 
+message Propuesta{
+  string lista = 1; 
+}
+
+message Aviso{
+  float tiempo = 1;
+  int32 id = 2;
+}

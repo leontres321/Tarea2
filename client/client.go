@@ -97,9 +97,9 @@ func Carga(algoritmo int8) {
 		if i == totalParts-1 {
 			mensaje.Last = true
 		}
-		mensaje.First = true
+		mensaje.Cliente = true
 		if i != 0 {
-			mensaje.First = false
+			mensaje.Cliente = false
 		}
 
 		//Aca se puede enviar el chunk

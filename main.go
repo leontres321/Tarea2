@@ -21,6 +21,10 @@ func main() {
 
 	fmt.Scanf("%d", &respuesta)
 
+	if respuesta == 5 {
+		os.Exit(0)
+	}
+
 	fmt.Println("\nTipo de algoritmo que se utilizara:")
 	fmt.Println("1) Centralizado")
 	fmt.Println("2) Distribuido")
@@ -38,7 +42,5 @@ func main() {
 		server.Run(respuesta, tipoAlgoritmo)
 	case 4:
 		server.Run(respuesta, tipoAlgoritmo)
-	case 5:
-		os.Exit(0)
 	}
 }

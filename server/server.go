@@ -43,9 +43,15 @@ func DataNode(algoritmo int8) {
 		os.Exit(1)
 	}
 
-	//for para agarrar todos los chunk y luego ver en que tipo de algoritmo esta
+	//for para agarrar todos los chunk
 
+	//Luego de tener todos los chunk debe enviarle una propuesta a alguien
+	//Si algoritmo == 1 entonces debe enviarle la propuesta al NameNode
+	//Si algoritmo == 2 entonces debe enviarle la propuesta al resto de DataNodes (1)
+
+	//luego de tener una propuesta aceptada debe enviar los chunks a sus respectivos dueños
 }
 
 func NameNode(algoritmo int8) {
+	//Si algoritmo != 1 entonces no es necesario que reciba propuestas, solo escrituras al log
 }

@@ -13,9 +13,9 @@ le puso a cliente.
 
 ### Distribución de máquinas:
 
-1. dist41: Cliente
-2. dist42: NameNode
-3. dist43: DataNode
+1. dist41: NameNode
+2. dist42: DataNode
+3. dist43: DataNode 
 4. dist44: DataNode
 
 # Tener en cuenta

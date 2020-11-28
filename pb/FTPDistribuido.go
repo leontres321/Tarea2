@@ -5,17 +5,13 @@ import (
 	"golang.org/x/net/context"
 )
 
-var IPNAME string = "10.6.40.181"
-
-var IPDATA [3]string = [3]string{"10.6.40.182", "10.6.40.183", "10.6.40.184"}
-
-type DataNode struct {
+type DataNodeD struct {
 	List_Chunk []Chunk
-	Cliente    FTPClient
+	Cliente    []FTPClient
 	Log        LOGClient
 }
 
-func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
+func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	if c == nil {
 		fmt.Println("Error en el paquete")
 		var resp Respuesta
@@ -26,7 +22,8 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	if c.Cliente == true {
 		s.List_Chunk = append(s.List_Chunk, *c)
 		if c.Last == true {
-			EnviarPropuesta(s)
+			fmt.Println("hola")
+			//EnviarPropuesta(s)
 			//enviar a otras maquinas y escribir las partes que se queda esta
 		}
 	} else {
@@ -36,12 +33,12 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	return nil, nil
 }
 
-func (s *DataNode) Descargar(ctx context.Context, n *Nombre) (*Chunk, error) {
+func (s *DataNodeD) DescargarD(ctx context.Context, n *Nombre) (*Chunk, error) {
 	return nil, nil
 }
 
-func (s *DataNode) mustEmbedUnimplementedFTPServer() {}
-
-func EnviarPropuesta(s *DataNode) bool {
-	return false
+func (s *DataNodeD) AvisoEscrituraD(ctx context.Context, n *Nombre) (*Respuesta, error) {
+	return nil, nil
 }
+
+func (s *DataNodeD) mustEmbedUnimplementedFTPDistribuidoServer() {}
