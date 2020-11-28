@@ -136,9 +136,9 @@ var _FTP_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FTPDistribuidoClient interface {
-	Enviar(ctx context.Context, in *Chunk, opts ...grpc.CallOption) (*Respuesta, error)
-	Descargar(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Chunk, error)
-	AvisoEscritura(ctx context.Context, in *Aviso, opts ...grpc.CallOption) (*Respuesta, error)
+	EnviarD(ctx context.Context, in *Chunk, opts ...grpc.CallOption) (*Respuesta, error)
+	DescargarD(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Chunk, error)
+	AvisoEscrituraD(ctx context.Context, in *Aviso, opts ...grpc.CallOption) (*Respuesta, error)
 }
 
 type fTPDistribuidoClient struct {
@@ -149,27 +149,27 @@ func NewFTPDistribuidoClient(cc grpc.ClientConnInterface) FTPDistribuidoClient {
 	return &fTPDistribuidoClient{cc}
 }
 
-func (c *fTPDistribuidoClient) Enviar(ctx context.Context, in *Chunk, opts ...grpc.CallOption) (*Respuesta, error) {
+func (c *fTPDistribuidoClient) EnviarD(ctx context.Context, in *Chunk, opts ...grpc.CallOption) (*Respuesta, error) {
 	out := new(Respuesta)
-	err := c.cc.Invoke(ctx, "/ftp.FTPDistribuido/Enviar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ftp.FTPDistribuido/EnviarD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fTPDistribuidoClient) Descargar(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Chunk, error) {
+func (c *fTPDistribuidoClient) DescargarD(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Chunk, error) {
 	out := new(Chunk)
-	err := c.cc.Invoke(ctx, "/ftp.FTPDistribuido/Descargar", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ftp.FTPDistribuido/DescargarD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *fTPDistribuidoClient) AvisoEscritura(ctx context.Context, in *Aviso, opts ...grpc.CallOption) (*Respuesta, error) {
+func (c *fTPDistribuidoClient) AvisoEscrituraD(ctx context.Context, in *Aviso, opts ...grpc.CallOption) (*Respuesta, error) {
 	out := new(Respuesta)
-	err := c.cc.Invoke(ctx, "/ftp.FTPDistribuido/AvisoEscritura", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ftp.FTPDistribuido/AvisoEscrituraD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -180,9 +180,9 @@ func (c *fTPDistribuidoClient) AvisoEscritura(ctx context.Context, in *Aviso, op
 // All implementations must embed UnimplementedFTPDistribuidoServer
 // for forward compatibility
 type FTPDistribuidoServer interface {
-	Enviar(context.Context, *Chunk) (*Respuesta, error)
-	Descargar(context.Context, *Nombre) (*Chunk, error)
-	AvisoEscritura(context.Context, *Aviso) (*Respuesta, error)
+	EnviarD(context.Context, *Chunk) (*Respuesta, error)
+	DescargarD(context.Context, *Nombre) (*Chunk, error)
+	AvisoEscrituraD(context.Context, *Aviso) (*Respuesta, error)
 	mustEmbedUnimplementedFTPDistribuidoServer()
 }
 
@@ -190,14 +190,14 @@ type FTPDistribuidoServer interface {
 type UnimplementedFTPDistribuidoServer struct {
 }
 
-func (UnimplementedFTPDistribuidoServer) Enviar(context.Context, *Chunk) (*Respuesta, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Enviar not implemented")
+func (UnimplementedFTPDistribuidoServer) EnviarD(context.Context, *Chunk) (*Respuesta, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnviarD not implemented")
 }
-func (UnimplementedFTPDistribuidoServer) Descargar(context.Context, *Nombre) (*Chunk, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Descargar not implemented")
+func (UnimplementedFTPDistribuidoServer) DescargarD(context.Context, *Nombre) (*Chunk, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DescargarD not implemented")
 }
-func (UnimplementedFTPDistribuidoServer) AvisoEscritura(context.Context, *Aviso) (*Respuesta, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AvisoEscritura not implemented")
+func (UnimplementedFTPDistribuidoServer) AvisoEscrituraD(context.Context, *Aviso) (*Respuesta, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AvisoEscrituraD not implemented")
 }
 func (UnimplementedFTPDistribuidoServer) mustEmbedUnimplementedFTPDistribuidoServer() {}
 
@@ -212,56 +212,56 @@ func RegisterFTPDistribuidoServer(s grpc.ServiceRegistrar, srv FTPDistribuidoSer
 	s.RegisterService(&_FTPDistribuido_serviceDesc, srv)
 }
 
-func _FTPDistribuido_Enviar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FTPDistribuido_EnviarD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Chunk)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FTPDistribuidoServer).Enviar(ctx, in)
+		return srv.(FTPDistribuidoServer).EnviarD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ftp.FTPDistribuido/Enviar",
+		FullMethod: "/ftp.FTPDistribuido/EnviarD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FTPDistribuidoServer).Enviar(ctx, req.(*Chunk))
+		return srv.(FTPDistribuidoServer).EnviarD(ctx, req.(*Chunk))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FTPDistribuido_Descargar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FTPDistribuido_DescargarD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Nombre)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FTPDistribuidoServer).Descargar(ctx, in)
+		return srv.(FTPDistribuidoServer).DescargarD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ftp.FTPDistribuido/Descargar",
+		FullMethod: "/ftp.FTPDistribuido/DescargarD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FTPDistribuidoServer).Descargar(ctx, req.(*Nombre))
+		return srv.(FTPDistribuidoServer).DescargarD(ctx, req.(*Nombre))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FTPDistribuido_AvisoEscritura_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _FTPDistribuido_AvisoEscrituraD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Aviso)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FTPDistribuidoServer).AvisoEscritura(ctx, in)
+		return srv.(FTPDistribuidoServer).AvisoEscrituraD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ftp.FTPDistribuido/AvisoEscritura",
+		FullMethod: "/ftp.FTPDistribuido/AvisoEscrituraD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FTPDistribuidoServer).AvisoEscritura(ctx, req.(*Aviso))
+		return srv.(FTPDistribuidoServer).AvisoEscrituraD(ctx, req.(*Aviso))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -271,16 +271,16 @@ var _FTPDistribuido_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*FTPDistribuidoServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Enviar",
-			Handler:    _FTPDistribuido_Enviar_Handler,
+			MethodName: "EnviarD",
+			Handler:    _FTPDistribuido_EnviarD_Handler,
 		},
 		{
-			MethodName: "Descargar",
-			Handler:    _FTPDistribuido_Descargar_Handler,
+			MethodName: "DescargarD",
+			Handler:    _FTPDistribuido_DescargarD_Handler,
 		},
 		{
-			MethodName: "AvisoEscritura",
-			Handler:    _FTPDistribuido_AvisoEscritura_Handler,
+			MethodName: "AvisoEscrituraD",
+			Handler:    _FTPDistribuido_AvisoEscrituraD_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -410,8 +410,8 @@ var _LOG_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LOGDistribuidoClient interface {
-	EnviarPropuesta(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error)
-	SolicitarUbicacion(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error)
+	EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error)
+	SolicitarUbicacionD(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error)
 }
 
 type lOGDistribuidoClient struct {
@@ -422,18 +422,18 @@ func NewLOGDistribuidoClient(cc grpc.ClientConnInterface) LOGDistribuidoClient {
 	return &lOGDistribuidoClient{cc}
 }
 
-func (c *lOGDistribuidoClient) EnviarPropuesta(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error) {
+func (c *lOGDistribuidoClient) EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error) {
 	out := new(Propuesta)
-	err := c.cc.Invoke(ctx, "/ftp.LOGDistribuido/EnviarPropuesta", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ftp.LOGDistribuido/EnviarPropuestaD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *lOGDistribuidoClient) SolicitarUbicacion(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error) {
+func (c *lOGDistribuidoClient) SolicitarUbicacionD(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error) {
 	out := new(Propuesta)
-	err := c.cc.Invoke(ctx, "/ftp.LOGDistribuido/SolicitarUbicacion", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ftp.LOGDistribuido/SolicitarUbicacionD", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -444,8 +444,8 @@ func (c *lOGDistribuidoClient) SolicitarUbicacion(ctx context.Context, in *Nombr
 // All implementations must embed UnimplementedLOGDistribuidoServer
 // for forward compatibility
 type LOGDistribuidoServer interface {
-	EnviarPropuesta(context.Context, *Propuesta) (*Propuesta, error)
-	SolicitarUbicacion(context.Context, *Nombre) (*Propuesta, error)
+	EnviarPropuestaD(context.Context, *Propuesta) (*Propuesta, error)
+	SolicitarUbicacionD(context.Context, *Nombre) (*Propuesta, error)
 	mustEmbedUnimplementedLOGDistribuidoServer()
 }
 
@@ -453,11 +453,11 @@ type LOGDistribuidoServer interface {
 type UnimplementedLOGDistribuidoServer struct {
 }
 
-func (UnimplementedLOGDistribuidoServer) EnviarPropuesta(context.Context, *Propuesta) (*Propuesta, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EnviarPropuesta not implemented")
+func (UnimplementedLOGDistribuidoServer) EnviarPropuestaD(context.Context, *Propuesta) (*Propuesta, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnviarPropuestaD not implemented")
 }
-func (UnimplementedLOGDistribuidoServer) SolicitarUbicacion(context.Context, *Nombre) (*Propuesta, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SolicitarUbicacion not implemented")
+func (UnimplementedLOGDistribuidoServer) SolicitarUbicacionD(context.Context, *Nombre) (*Propuesta, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SolicitarUbicacionD not implemented")
 }
 func (UnimplementedLOGDistribuidoServer) mustEmbedUnimplementedLOGDistribuidoServer() {}
 
@@ -472,38 +472,38 @@ func RegisterLOGDistribuidoServer(s grpc.ServiceRegistrar, srv LOGDistribuidoSer
 	s.RegisterService(&_LOGDistribuido_serviceDesc, srv)
 }
 
-func _LOGDistribuido_EnviarPropuesta_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LOGDistribuido_EnviarPropuestaD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Propuesta)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LOGDistribuidoServer).EnviarPropuesta(ctx, in)
+		return srv.(LOGDistribuidoServer).EnviarPropuestaD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ftp.LOGDistribuido/EnviarPropuesta",
+		FullMethod: "/ftp.LOGDistribuido/EnviarPropuestaD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LOGDistribuidoServer).EnviarPropuesta(ctx, req.(*Propuesta))
+		return srv.(LOGDistribuidoServer).EnviarPropuestaD(ctx, req.(*Propuesta))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _LOGDistribuido_SolicitarUbicacion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LOGDistribuido_SolicitarUbicacionD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Nombre)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LOGDistribuidoServer).SolicitarUbicacion(ctx, in)
+		return srv.(LOGDistribuidoServer).SolicitarUbicacionD(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/ftp.LOGDistribuido/SolicitarUbicacion",
+		FullMethod: "/ftp.LOGDistribuido/SolicitarUbicacionD",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LOGDistribuidoServer).SolicitarUbicacion(ctx, req.(*Nombre))
+		return srv.(LOGDistribuidoServer).SolicitarUbicacionD(ctx, req.(*Nombre))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -513,12 +513,12 @@ var _LOGDistribuido_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*LOGDistribuidoServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "EnviarPropuesta",
-			Handler:    _LOGDistribuido_EnviarPropuesta_Handler,
+			MethodName: "EnviarPropuestaD",
+			Handler:    _LOGDistribuido_EnviarPropuestaD_Handler,
 		},
 		{
-			MethodName: "SolicitarUbicacion",
-			Handler:    _LOGDistribuido_SolicitarUbicacion_Handler,
+			MethodName: "SolicitarUbicacionD",
+			Handler:    _LOGDistribuido_SolicitarUbicacionD_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
