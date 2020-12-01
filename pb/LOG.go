@@ -4,6 +4,7 @@ import (
 	"golang.org/x/net/context"
 	"log"
 	"os"
+	"strings"
 )
 
 type NameNode struct {
@@ -50,11 +51,13 @@ func LogDistribucion(s *NameNode) {
 
 	defer file.Close()
 
-	if _, err := file.WriteString(s.Libros[0] + " " + string(len(s.Libros))); err != nil {
+	posUltimoLibro := len(s.Libros) - 1
+
+	if _, err := file.WriteString(strings.TrimSpace(s.Libros[posUltimoLibro] + " " + string(len(s.Ubicaciones[posUltimoLibro])))); err != nil {
 		log.Println(err)
 	}
 
-	for i := 0; i < len(s.Libros); i++ {
-		log.Printf("parte_" + string(i+1) + " " + s.Ubicaciones[i] + "\n")
+	for i := 0; i < len(s.Ubicaciones[posUltimoLibro]); i++ {
+		log.Printf("parte_" + string(i+1) + " " + string(s.Ubicaciones[posUltimoLibro][i]) + "\n")
 	}
 }
