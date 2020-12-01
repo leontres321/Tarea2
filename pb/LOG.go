@@ -2,6 +2,8 @@ package pb
 
 import (
 	"golang.org/x/net/context"
+	"log"
+	"os"
 )
 
 type NameNode struct {
@@ -18,6 +20,9 @@ func (s *NameNode) EnviarPropuesta(ctx context.Context, p *Propuesta) (*Propuest
 	//guaradar el nombre del libro y la ubicacion de las partes
 	s.Libros = append(s.Libros, NuevaPropuesta.NombreLibro)
 	s.Ubicaciones = append(s.Ubicaciones, NuevaPropuesta.Lista)
+
+	LogDistribucion(s)
+
 	return &NuevaPropuesta, nil
 }
 
@@ -34,3 +39,18 @@ func (s *NameNode) SolicitarUbicacion(ctx context.Context, n *Nombre) (*Propuest
 }
 
 func (s *NameNode) mustEmbedUnimplementedLOGServer() {}
+
+///Le agrega texto al final y si el archivo no existe lo crea
+func LogDistribucion(s *NameNode) {
+	file, err := os.OpenFile("Log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	defer file.Close()
+
+	if _, err := file.WriteString(s.Libros[0]); err != nil {
+		log.Println(err)
+	}
+}
