@@ -22,7 +22,7 @@ service LOG{
 }
 
 service LOGDistribuido{
-  rpc EnviarPropuestaD(Propuesta) returns (Respuesta);
+  rpc EnviarPropuestaD(Propuesta) returns (Propuesta);
   rpc SolicitarUbicacionD(Nombre) returns (Propuesta);
   rpc PedirLibrosD(Empty) returns (ListaLibros);
 }

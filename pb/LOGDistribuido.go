@@ -10,17 +10,13 @@ type NameNode struct {
 	Libros   []string
 }
 */
-func (s *NameNode) EnviarPropuestaD(ctx context.Context, p *Propuesta) (*Respuesta, error) {
+func (s *NameNode) EnviarPropuestaD(ctx context.Context, p *Propuesta) (*Propuesta, error) {
 	//guaradar el nombre del libro y la ubicacion de las partes
 	s.Libros = append(s.Libros, p.NombreLibro)
 	s.Ubicaciones = append(s.Ubicaciones, p.Lista)
 
-	var respuesta Respuesta
-
-	respuesta.Gud = true
-
 	LogDistribucion(s)
-	return &respuesta, nil
+	return p, nil
 }
 
 func (s *NameNode) SolicitarUbicacionD(ctx context.Context, n *Nombre) (*Propuesta, error) {
