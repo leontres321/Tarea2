@@ -55,7 +55,7 @@ func LogDistribucion(s *NameNode) {
 	posUltimoLibro := len(s.Libros) - 1
 
 	//ERROR: s.ubicaciones bla bla no entrega bien el largo de ubicaciones
-	if _, err := file.WriteString(strings.TrimSpace(s.Libros[posUltimoLibro]+" "+string(len(s.Ubicaciones[posUltimoLibro]))) + "\n"); err != nil {
+	if _, err := file.WriteString(strings.TrimSpace(s.Libros[posUltimoLibro]+" "+strconv.Itoa(len(s.Ubicaciones[posUltimoLibro]))) + "\n"); err != nil {
 		log.Println(err)
 	}
 

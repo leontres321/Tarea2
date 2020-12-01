@@ -24,7 +24,7 @@ func Run(int_eleccion int8, algoritmo int8) {
 		eleccion = "descarga"
 	}
 
-	fmt.Printf("Corriendo cliente como: %s", eleccion)
+	fmt.Printf("Corriendo cliente como: %s\n", eleccion)
 
 	if int_eleccion == 1 {
 		Carga(algoritmo)
