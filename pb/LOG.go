@@ -5,7 +5,6 @@ import (
 )
 
 type NameNode struct {
-	Clientes    []FTPClient
 	Libros      []string
 	Ubicaciones []string
 }

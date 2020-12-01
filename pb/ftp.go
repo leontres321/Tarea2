@@ -2,9 +2,11 @@ package pb
 
 import (
 	"fmt"
-	"golang.org/x/net/context"
 	"os"
 	"strconv"
+
+	"golang.org/x/net/context"
+	grpc "google.golang.org/grpc"
 )
 
 var IPNAME string = "10.6.40.181"
@@ -13,13 +15,47 @@ var IPDATA [3]string = [3]string{"10.6.40.182", "10.6.40.183", "10.6.40.184"}
 
 type DataNode struct {
 	List_Chunk []Chunk
-	Clientes   [3]FTPClient
-	Log        LOGClient
 }
 
 func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	var resp Respuesta
 	resp.Gud = true
+	//generar conexiones a otros DataNodes y NameNode
+	var connlog1 *grpc.ClientConn
+
+	var ftps [3]pb.FTPClient
+	var connftp1 *grpc.ClientConn
+	var connftp2 *grpc.ClientConn
+	var connftp3 *grpc.ClientConn
+
+	//NameNode Conexion
+	connlog1, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	logs := pb.NewLOGClient(connlog1)
+	//DataNode 1  dist42 conexion
+	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	ftps[0] = pb.NewFTPClient(connftp1)
+	//DataNode 2  dist43 conexion
+	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	ftps[1] = pb.NewFTPClient(connftp2)
+	//DataNode 3  dist44 conexion
+	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	ftps[2] = pb.NewFTPClient(connftp3)
 
 	if c == nil {
 		fmt.Println("Error en el paquete")
@@ -33,7 +69,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		if c.Last == true {
 			//crea y envia la propuesta al NameNode
 			p2 := CrearPropuesta(int(c.Parts), c.Name)
-			p, err := s.Log.EnviarPropuesta(context.Background(), &p2)
+			p, err := logs.EnviarPropuesta(context.Background(), &p2)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
@@ -51,7 +87,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				//envia el chunk obtenido al nodo segun propuesta
 				ChunkEnviar.Cliente = false
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
-				r, _ := s.Clientes[nodo].Enviar(context.Background(), &ChunkEnviar)
+				r, _ := ftps[nodo].Enviar(context.Background(), &ChunkEnviar)
 				fmt.Println(r.Gud)
 			}
 
