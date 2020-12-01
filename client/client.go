@@ -134,9 +134,8 @@ func Descarga(algoritmo int8) {
 		os.Exit(0)
 	}
 
-	partes := len(p.Lista)
 	//Asumiendo que existe
-	_, err := os.Create(nombre)
+	_, err = os.Create(nombre)
 
 	if err != nil {
 		fmt.Println(err)
@@ -150,18 +149,10 @@ func Descarga(algoritmo int8) {
 		os.Exit(4)
 	}
 
-	var ftps [3]FTPClient
+	var ftps [3]pb.FTPClient
 	var connftp1 *grpc.ClientConn
 	var connftp2 *grpc.ClientConn
 	var connftp3 *grpc.ClientConn
-
-	//NameNode Conexion
-	connlog1, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
-	if err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
-	logs := NewLOGClient(connlog1)
 
 	//DataNode 1  dist42 conexion
 	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
@@ -169,7 +160,7 @@ func Descarga(algoritmo int8) {
 		log.Println(err)
 		os.Exit(1)
 	}
-	ftps[0] = NewFTPClient(connftp1)
+	ftps[0] = pb.NewFTPClient(connftp1)
 
 	//DataNode 2  dist43 conexion
 	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
@@ -177,21 +168,19 @@ func Descarga(algoritmo int8) {
 		log.Println(err)
 		os.Exit(1)
 	}
-	ftps[1] = NewFTPClient(connftp2)
+	ftps[1] = pb.NewFTPClient(connftp2)
 	//DataNode 3  dist44 conexion
 	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)
 	}
-	ftps[2] = NewFTPClient(connftp3)
-
-	var writePosition int64 = 0
+	ftps[2] = pb.NewFTPClient(connftp3)
 
 	for i := 0; i < len(p.Lista); i++ {
-		currentChunkFileName := nombre + "_" + strconv.FormatUint(j+1, 10)
+		currentChunkFileName := nombre + "_" + strconv.FormatUint(uint64(i+1), 10)
 		nodo, _ := strconv.Atoi(p.Lista[i : i+1])
-		chunkRecibido, err := ftps[nodo].Descargar(context.Background(), pb.Nombre{Text: currentChunkFileName})
+		chunkRecibido, err := ftps[nodo].Descargar(context.Background(), &pb.Nombre{Text: currentChunkFileName})
 
 		/*newFileChunk, err := os.Open(currentChunkFileName)
 
