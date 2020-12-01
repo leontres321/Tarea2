@@ -55,6 +55,6 @@ func LogDistribucion(s *NameNode) {
 	}
 
 	for i := 0; i < len(s.Libros); i++ {
-		log.Printf(s.Libros[i] + " " + s.Ubicaciones[i])
+		log.Printf("parte_" + string(i+1) + " " + s.Ubicaciones[i] + "\n")
 	}
 }
