@@ -76,7 +76,7 @@ func Carga(algoritmo int8) {
 
 		file.Read(partBuffer)
 
-		fileName := nombre + "_" + strconv.FormatUint(i+1, 10)
+		fileName := nombre
 
 		/*_, err := os.Create(fileName)
 
