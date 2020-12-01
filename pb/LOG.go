@@ -68,7 +68,8 @@ func LogDistribucion(s *NameNode) {
 
 	for i := 0; i < len(s.Ubicaciones[posUltimoLibro]); i++ {
 		//log.Printf("parte_" + strconv.Itoa(i+1) + " " + string(s.Ubicaciones[posUltimoLibro][i]) + "\n")
-		if _, err := file.WriteString("parte_" + strconv.Itoa(i+1) + " " + IPDATA[strconv.Atoi(string(s.Ubicaciones[posUltimoLibro][i]))] + "\n"); err != nil {
+		aux, _ := strconv.Atoi(s.Ubicaciones[posUltimoLibro][i : i+1])
+		if _, err := file.WriteString("parte_" + strconv.Itoa(i+1) + " " + IPDATA[aux] + "\n"); err != nil {
 			log.Println(err)
 		}
 	}
