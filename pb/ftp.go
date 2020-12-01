@@ -1,7 +1,7 @@
 package pb
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 
@@ -31,34 +31,34 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	//NameNode Conexion
 	connlog1, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 	logs := pb.NewLOGClient(connlog1)
 	//DataNode 1  dist42 conexion
 	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 	ftps[0] = pb.NewFTPClient(connftp1)
 	//DataNode 2  dist43 conexion
 	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 	ftps[1] = pb.NewFTPClient(connftp2)
 	//DataNode 3  dist44 conexion
 	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 	ftps[2] = pb.NewFTPClient(connftp3)
 
 	if c == nil {
-		fmt.Println("Error en el paquete")
+		log.Println("Error en el paquete")
 		resp.Gud = false
 		return &resp, nil
 	}
@@ -71,7 +71,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 			p2 := CrearPropuesta(int(c.Parts), c.Name)
 			p, err := logs.EnviarPropuesta(context.Background(), &p2)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 				os.Exit(1)
 			}
 			var ChunkEnviar Chunk
@@ -88,7 +88,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				ChunkEnviar.Cliente = false
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
 				r, _ := ftps[nodo].Enviar(context.Background(), &ChunkEnviar)
-				fmt.Println(r.Gud)
+				log.Println(r.Gud)
 			}
 
 		}
@@ -98,34 +98,34 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		/*filename = s.List_Chunk[:len(s.List_Chunk)-1].Name
 		_, err := os.Create("./partes/" + filename)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			os.Exit(0)
 		}
 		ioutil.WriteFile(filename, s.List_Chunk[:len(s.List_Chunk)-1].Chunk, os.ModeAppend)
 		*/
 		// Guardarlo en disco
 		NombreParte := c.Name + "_" + strconv.Itoa(int(c.ThisPart))
-		fmt.Println("guardando " + NombreParte + "...")
+		log.Println("guardando " + NombreParte + "...")
 		//crear archivo
 		_, err := os.Create(NombreParte)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			os.Exit(3)
 		}
 		file, err := os.OpenFile(NombreParte, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			os.Exit(4)
 		}
 		_, err = file.Write(c.Chunk)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			os.Exit(8)
 		}
 		file.Sync()
 		file.Close()
 
-		fmt.Println(NombreParte + " Guardada")
+		log.Println(NombreParte + " Guardada")
 	}
 
 	return &resp, nil

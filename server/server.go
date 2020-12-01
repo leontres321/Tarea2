@@ -2,7 +2,7 @@ package server
 
 import (
 	"Tarea2/pb"
-	"fmt"
+	"log"
 	"net"
 	"os"
 
@@ -18,7 +18,7 @@ func Run(int_eleccion int8, algoritmo int8) {
 		eleccion = "NameNode"
 	}
 
-	fmt.Printf("Corriendo servidor como: %s", eleccion)
+	log.Printf("Corriendo servidor como: %s", eleccion)
 
 	if int_eleccion == 3 {
 		DataNode(algoritmo)
@@ -31,7 +31,7 @@ func DataNode(algoritmo int8) {
 	//Crear server DataNode puerto 9000
 	lis, err := net.Listen("tcp", ":9000")
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 	//incializar servidor con las conexiones antes creadas
@@ -39,7 +39,7 @@ func DataNode(algoritmo int8) {
 	Server1 := grpc.NewServer()
 	pb.RegisterFTPServer(Server1, &L)
 	if err := Server1.Serve(lis); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 
@@ -49,7 +49,7 @@ func NameNode(algoritmo int8) {
 	//Crear server NameNode puerto 9000
 	lis, err := net.Listen("tcp", ":9000")
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 	//incializar servidor con las conexiones antes creadas
@@ -57,7 +57,7 @@ func NameNode(algoritmo int8) {
 	Server1 := grpc.NewServer()
 	pb.RegisterFTPServer(Server1, &L)
 	if err := Server1.Serve(lis); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 }
