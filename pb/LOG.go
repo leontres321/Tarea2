@@ -78,7 +78,7 @@ func RevisarPropuesta(p *Propuesta) (*Propuesta, error) {
 	v := rand.Float64()
 
 	//Rechazar propuesta
-	if v < 10 {
+	if v < 0.1 {
 		largo := len(p.Lista)
 		random := rand.Intn(3)
 
