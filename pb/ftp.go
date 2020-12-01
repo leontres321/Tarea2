@@ -35,6 +35,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		os.Exit(1)
 	}
 	logs := NewLOGClient(connlog1)
+
 	//DataNode 1  dist42 conexion
 	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
 	if err != nil {
@@ -42,6 +43,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		os.Exit(1)
 	}
 	ftps[0] = NewFTPClient(connftp1)
+
 	//DataNode 2  dist43 conexion
 	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
 	if err != nil {

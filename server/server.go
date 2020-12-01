@@ -53,9 +53,9 @@ func NameNode(algoritmo int8) {
 		os.Exit(1)
 	}
 	//incializar servidor con las conexiones antes creadas
-	L := pb.DataNode{}
+	L := pb.NameNode{}
 	Server1 := grpc.NewServer()
-	pb.RegisterFTPServer(Server1, &L)
+	pb.RegisterLOGServer(Server1, &L)
 	if err := Server1.Serve(lis); err != nil {
 		log.Println(err)
 		os.Exit(1)
