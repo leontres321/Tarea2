@@ -23,7 +23,7 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	//generar conexiones a otros DataNodes y NameNode
 	var connlog1 *grpc.ClientConn
 
-	var ftps [3]pb.FTPClient
+	var ftps [3]FTPClient
 	var connftp1 *grpc.ClientConn
 	var connftp2 *grpc.ClientConn
 	var connftp3 *grpc.ClientConn
@@ -34,28 +34,28 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	logs := pb.NewLOGClient(connlog1)
+	logs := NewLOGClient(connlog1)
 	//DataNode 1  dist42 conexion
 	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[0] = pb.NewFTPClient(connftp1)
+	ftps[0] = NewFTPClient(connftp1)
 	//DataNode 2  dist43 conexion
 	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[1] = pb.NewFTPClient(connftp2)
+	ftps[1] = NewFTPClient(connftp2)
 	//DataNode 3  dist44 conexion
 	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[2] = pb.NewFTPClient(connftp3)
+	ftps[2] = NewFTPClient(connftp3)
 
 	if c == nil {
 		fmt.Println("Error en el paquete")
