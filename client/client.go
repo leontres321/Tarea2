@@ -118,19 +118,36 @@ func Carga(algoritmo int8) {
 func Descarga(algoritmo int8) {
 	var nombre string
 
-	fmt.Printf("\nIngrese el nombre del libro a bajar: ")
-	fmt.Scanf("%s", &nombre)
-
 	//Preguntar a NameNode si existe y preguntar cantidad de partes
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
 	c := pb.NewLOGClient(conn)
+
+	var libros *pb.ListaLibros
+	var meh pb.Empty
+	libros, err = c.PedirLibros(context.Background(), &meh)
+
+	fmt.Println("Lista de libros en el sistema:")
+
+	if libros.CantLibros == 0 {
+		fmt.Println("No hay libros actualmente, no se puede descargar")
+		os.Exit(0)
+	}
+
+	for i := uint64(0); i < libros.CantLibros; i++ {
+		fmt.Println(libros.NombreLibro[i])
+	}
+
+	fmt.Println("--------------")
+	fmt.Printf("\nIngrese el nombre del libro a bajar: ")
+	fmt.Scanf("%s", &nombre)
+
 	var n pb.Nombre
 	n.Text = strings.TrimSpace(nombre)
 	p, err := c.SolicitarUbicacion(context.Background(), &n)
 
 	if p == nil {
-		fmt.Println("no exite el archivo")
+		fmt.Println("No exite el archivo")
 		os.Exit(0)
 	}
 
