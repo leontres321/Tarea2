@@ -7,5 +7,8 @@ gen:
 clean:
 	rm ./pb/ftp.pb.go ./pb/ftp_grpc.pb.go
 
+remove:
+	rm ./partes/*
+
 run:
 	go run main.go

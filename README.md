@@ -3,13 +3,11 @@
 - make run: comienza la ejecución de la tarea, para todo tipo de máquina
 - make gen: genera archivos pb
 - make clean: elimina archivos pb
+- make remove: elimina todas las partes de libros 
 
 ## Ejecución del código
-Para que el código funcione y no se queme es necesario utilizar la maquina 1
-(dist41) como cliente, en esta máquina se pedirá, además del modo de uso, 
-el algoritmo a utilizar, siendo las posibilidades centralizado o distribuido.
-Al encender el resto de máquinas es necesario utilizar el mismo algoritmo que se
-le puso a cliente.
+En todas las maquinas se debe utilizar el comando *make run* y ahí se preguntará
+como quiere utilizar el algoritmo.
 
 ### Distribución de máquinas:
 
@@ -19,3 +17,8 @@ le puso a cliente.
 4. dist44: DataNode
 
 # Tener en cuenta
+Es necesario de que en todas las maquinas se ejecute el mismo tipo de algoritmo, por lo tanto
+no puede existir una combinación de maquinas centralizadas y distribuidas.
+
+## Se asumió
+- 

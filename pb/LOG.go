@@ -54,6 +54,7 @@ func LogDistribucion(s *NameNode) {
 
 	posUltimoLibro := len(s.Libros) - 1
 
+	//ERROR: s.ubicaciones bla bla no entrega bien el largo de ubicaciones
 	if _, err := file.WriteString(strings.TrimSpace(s.Libros[posUltimoLibro]+" "+string(len(s.Ubicaciones[posUltimoLibro]))) + "\n"); err != nil {
 		log.Println(err)
 	}
@@ -64,4 +65,11 @@ func LogDistribucion(s *NameNode) {
 			log.Println(err)
 		}
 	}
+}
+
+func (s *NameNode) PedirLibros(ctx context.Context, e *Empty) (*ListaLibros, error) {
+	var listaLibros ListaLibros
+	listaLibros.NombreLibro = s.Libros
+	listaLibros.CantLibros = uint64(len(s.Libros))
+	return &listaLibros, nil
 }

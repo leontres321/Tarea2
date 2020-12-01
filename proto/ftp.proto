@@ -18,11 +18,13 @@ service FTPDistribuido{
 service LOG{
   rpc EnviarPropuesta(Propuesta) returns (Propuesta);
   rpc SolicitarUbicacion(Nombre) returns (Propuesta);
+  rpc PedirLibros(Empty) returns (ListaLibros);
 }
 
 service LOGDistribuido{
   rpc EnviarPropuestaD(Propuesta) returns (Propuesta);
   rpc SolicitarUbicacionD(Nombre) returns (Propuesta);
+  rpc PedirLibrosD(Empty) returns (ListaLibros);
 }
 
 message Chunk {
@@ -51,3 +53,10 @@ message Aviso{
   float tiempo = 1;
   int32 id = 2;
 }
+
+message ListaLibros{
+  uint64 CantLibros = 1;
+  repeated string NombreLibro = 2; 
+}
+
+message Empty{}

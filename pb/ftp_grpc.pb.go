@@ -4,7 +4,6 @@ package pb
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -294,6 +293,7 @@ var _FTPDistribuido_serviceDesc = grpc.ServiceDesc{
 type LOGClient interface {
 	EnviarPropuesta(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error)
 	SolicitarUbicacion(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error)
+	PedirLibros(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListaLibros, error)
 }
 
 type lOGClient struct {
@@ -322,12 +322,22 @@ func (c *lOGClient) SolicitarUbicacion(ctx context.Context, in *Nombre, opts ...
 	return out, nil
 }
 
+func (c *lOGClient) PedirLibros(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListaLibros, error) {
+	out := new(ListaLibros)
+	err := c.cc.Invoke(ctx, "/ftp.LOG/PedirLibros", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LOGServer is the server API for LOG service.
 // All implementations must embed UnimplementedLOGServer
 // for forward compatibility
 type LOGServer interface {
 	EnviarPropuesta(context.Context, *Propuesta) (*Propuesta, error)
 	SolicitarUbicacion(context.Context, *Nombre) (*Propuesta, error)
+	PedirLibros(context.Context, *Empty) (*ListaLibros, error)
 	mustEmbedUnimplementedLOGServer()
 }
 
@@ -340,6 +350,9 @@ func (UnimplementedLOGServer) EnviarPropuesta(context.Context, *Propuesta) (*Pro
 }
 func (UnimplementedLOGServer) SolicitarUbicacion(context.Context, *Nombre) (*Propuesta, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SolicitarUbicacion not implemented")
+}
+func (UnimplementedLOGServer) PedirLibros(context.Context, *Empty) (*ListaLibros, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PedirLibros not implemented")
 }
 func (UnimplementedLOGServer) mustEmbedUnimplementedLOGServer() {}
 
@@ -390,6 +403,24 @@ func _LOG_SolicitarUbicacion_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LOG_PedirLibros_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LOGServer).PedirLibros(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ftp.LOG/PedirLibros",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LOGServer).PedirLibros(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _LOG_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ftp.LOG",
 	HandlerType: (*LOGServer)(nil),
@@ -402,6 +433,10 @@ var _LOG_serviceDesc = grpc.ServiceDesc{
 			MethodName: "SolicitarUbicacion",
 			Handler:    _LOG_SolicitarUbicacion_Handler,
 		},
+		{
+			MethodName: "PedirLibros",
+			Handler:    _LOG_PedirLibros_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "ftp.proto",
@@ -413,6 +448,7 @@ var _LOG_serviceDesc = grpc.ServiceDesc{
 type LOGDistribuidoClient interface {
 	EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error)
 	SolicitarUbicacionD(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error)
+	PedirLibrosD(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListaLibros, error)
 }
 
 type lOGDistribuidoClient struct {
@@ -441,12 +477,22 @@ func (c *lOGDistribuidoClient) SolicitarUbicacionD(ctx context.Context, in *Nomb
 	return out, nil
 }
 
+func (c *lOGDistribuidoClient) PedirLibrosD(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListaLibros, error) {
+	out := new(ListaLibros)
+	err := c.cc.Invoke(ctx, "/ftp.LOGDistribuido/PedirLibrosD", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LOGDistribuidoServer is the server API for LOGDistribuido service.
 // All implementations must embed UnimplementedLOGDistribuidoServer
 // for forward compatibility
 type LOGDistribuidoServer interface {
 	EnviarPropuestaD(context.Context, *Propuesta) (*Propuesta, error)
 	SolicitarUbicacionD(context.Context, *Nombre) (*Propuesta, error)
+	PedirLibrosD(context.Context, *Empty) (*ListaLibros, error)
 	mustEmbedUnimplementedLOGDistribuidoServer()
 }
 
@@ -459,6 +505,9 @@ func (UnimplementedLOGDistribuidoServer) EnviarPropuestaD(context.Context, *Prop
 }
 func (UnimplementedLOGDistribuidoServer) SolicitarUbicacionD(context.Context, *Nombre) (*Propuesta, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SolicitarUbicacionD not implemented")
+}
+func (UnimplementedLOGDistribuidoServer) PedirLibrosD(context.Context, *Empty) (*ListaLibros, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PedirLibrosD not implemented")
 }
 func (UnimplementedLOGDistribuidoServer) mustEmbedUnimplementedLOGDistribuidoServer() {}
 
@@ -509,6 +558,24 @@ func _LOGDistribuido_SolicitarUbicacionD_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LOGDistribuido_PedirLibrosD_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LOGDistribuidoServer).PedirLibrosD(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ftp.LOGDistribuido/PedirLibrosD",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LOGDistribuidoServer).PedirLibrosD(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _LOGDistribuido_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ftp.LOGDistribuido",
 	HandlerType: (*LOGDistribuidoServer)(nil),
@@ -520,6 +587,10 @@ var _LOGDistribuido_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SolicitarUbicacionD",
 			Handler:    _LOGDistribuido_SolicitarUbicacionD_Handler,
+		},
+		{
+			MethodName: "PedirLibrosD",
+			Handler:    _LOGDistribuido_PedirLibrosD_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

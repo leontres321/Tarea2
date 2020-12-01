@@ -19,3 +19,7 @@ func (s *NameNode) SolicitarUbicacionD(ctx context.Context, n *Nombre) (*Propues
 }
 
 func (s *NameNode) mustEmbedUnimplementedLOGDistribuidoServer() {}
+
+func (s *NameNode) PedirLibrosD(ctx context.Context, e *Empty) (*ListaLibros, error) {
+	return nil, nil
+}
