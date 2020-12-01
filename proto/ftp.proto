@@ -44,6 +44,7 @@ message Nombre{
 
 message Propuesta{
   string lista = 1; 
+  string NombreLibro =2;
 }
 
 message Aviso{
