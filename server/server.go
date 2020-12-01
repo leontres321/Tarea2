@@ -42,28 +42,28 @@ func DataNode(algoritmo int8) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	logs := pb.NewLOGClient(conn)
+	logs := pb.NewLOGClient(connlog1)
 	//DataNode 1  dist42 conexion
-	connlog1, err := grpc.Dial("dist42:9000", grpc.WithInsecure())
+	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[0] = pb.NewFTPClient(conn)
+	ftps[0] = pb.NewFTPClient(connftp1)
 	//DataNode 2  dist43 conexion
-	connlog1, err := grpc.Dial("dist43:9000", grpc.WithInsecure())
+	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[1] = pb.NewFTPClient(conn)
+	ftps[1] = pb.NewFTPClient(connftp2)
 	//DataNode 3  dist44 conexion
-	connlog1, err := grpc.Dial("dist44:9000", grpc.WithInsecure())
+	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[2] = pb.NewFTPClient(conn)
+	ftps[2] = pb.NewFTPClient(connftp3)
 
 	//Crear server DataNode puerto 9000
 	lis, err := net.Listen("tcp", ":9000")
@@ -72,7 +72,7 @@ func DataNode(algoritmo int8) {
 		os.Exit(1)
 	}
 	//incializar servidor con las conexiones antes creadas
-	L := pb.DataNode{log: logs, Clientes: ftps}
+	L := pb.DataNode{Log: logs, Clientes: ftps}
 	Server1 := grpc.NewServer()
 	pb.RegisterFTPServer(Server1, &L)
 	if err := Server1.Serve(lis); err != nil {
@@ -89,26 +89,26 @@ func NameNode(algoritmo int8) {
 	var connftp2 *grpc.ClientConn
 	var connftp3 *grpc.ClientConn
 	//DataNode 1  dist42 conexion
-	connlog1, err := grpc.Dial("dist42:9000", grpc.WithInsecure())
+	connftp1, err := grpc.Dial("dist42:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[0] = pb.NewFTPClient(conn)
+	ftps[0] = pb.NewFTPClient(connftp1)
 	//DataNode 2  dist43 conexion
-	connlog1, err := grpc.Dial("dist43:9000", grpc.WithInsecure())
+	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[1] = pb.NewFTPClient(conn)
+	ftps[1] = pb.NewFTPClient(connftp2)
 	//DataNode 3  dist44 conexion
-	connlog1, err := grpc.Dial("dist44:9000", grpc.WithInsecure())
+	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ftps[2] = pb.NewFTPClient(conn)
+	ftps[2] = pb.NewFTPClient(connftp3)
 
 	//Crear server NameNode puerto 9000
 	lis, err := net.Listen("tcp", ":9000")

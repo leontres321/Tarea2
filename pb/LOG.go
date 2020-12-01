@@ -15,11 +15,11 @@ func (s *NameNode) EnviarPropuesta(ctx context.Context, p *Propuesta) (*Propuest
 	//aqui se pude modificar la propuesta, verificar errores, etc
 	//...
 	//...
-	NuevaPropuesta = p
+	NuevaPropuesta = *p
 	//guaradar el nombre del libro y la ubicacion de las partes
-	Libros = append(Libros, Propuesta.NombreLibro)
-	Ubicaciones = append(Ubicaciones, Propuesta.lista)
-	return NuevaPropuesta, nil
+	s.Libros = append(s.Libros, NuevaPropuesta.NombreLibro)
+	s.Ubicaciones = append(s.Ubicaciones, NuevaPropuesta.Lista)
+	return &NuevaPropuesta, nil
 }
 
 func (s *NameNode) SolicitarUbicacion(ctx context.Context, n *Nombre) (*Propuesta, error) {
@@ -31,7 +31,7 @@ func (s *NameNode) SolicitarUbicacion(ctx context.Context, n *Nombre) (*Propuest
 			break
 		}
 	}
-	return UbicacionesLibro, nil
+	return &UbicacionesLibro, nil
 }
 
 func (s *NameNode) mustEmbedUnimplementedLOGServer() {}
