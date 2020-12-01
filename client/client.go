@@ -4,8 +4,10 @@ import (
 	"Tarea2/pb"
 	"bufio"
 	"fmt"
+
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+
 	//"io/ioutil"
 	"math"
 	"os"
@@ -98,9 +100,6 @@ func Carga(algoritmo int8) {
 			mensaje.Last = true
 		}
 		mensaje.Cliente = true
-		if i != 0 {
-			mensaje.Cliente = false
-		}
 
 		//Aca se puede enviar el chunk
 		resp, err := c.Enviar(context.Background(), &mensaje)

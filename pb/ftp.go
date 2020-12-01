@@ -104,7 +104,8 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		ioutil.WriteFile(filename, s.List_Chunk[:len(s.List_Chunk)-1].Chunk, os.ModeAppend)
 		*/
 		// Guardarlo en disco
-		NombreParte := c.Name + "_" + strconv.Itoa(int(c.ThisPart))
+		//NombreParte := c.Name + "_" + strconv.Itoa(int(c.ThisPart))
+		NombreParte := "partes/" + c.Name
 		log.Println("guardando " + NombreParte + "...")
 		//crear archivo
 		_, err := os.Create(NombreParte)
