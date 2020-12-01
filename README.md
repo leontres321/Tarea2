@@ -21,4 +21,4 @@ Es necesario de que en todas las maquinas se ejecute el mismo tipo de algoritmo,
 no puede existir una combinación de maquinas centralizadas y distribuidas.
 
 ## Se asumió
-- 
+- La política de rechazo estocástiac con un porcentage de 10% para generar una nueva propuesta
