@@ -50,7 +50,7 @@ func LogDistribucion(s *NameNode) {
 
 	defer file.Close()
 
-	if _, err := file.WriteString(s.Libros[0] + " " + len(s.Libros)); err != nil {
+	if _, err := file.WriteString(s.Libros[0] + " " + string(len(s.Libros))); err != nil {
 		log.Println(err)
 	}
 
