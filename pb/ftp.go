@@ -149,6 +149,7 @@ func (s *DataNode) Descargar(ctx context.Context, n *Nombre) (*Chunk, error) {
 	}
 	var chunkSize int64 = chunkInfo.Size()
 	chunkBufferBytes := make([]byte, chunkSize)
+	newFileChunk.Read(chunkBufferBytes)
 	/*
 		reader := bufio.NewReader(newFileChunk)
 		_, err = reader.Read(chunkBufferBytes)
