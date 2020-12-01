@@ -15,8 +15,8 @@ func main() {
 	fmt.Println("2) Descargar un libro")
 	fmt.Println("3) Encender almacenamiento de libros (DataNode)")
 	fmt.Println("4) Almacenar LOG (NameNode)")
-	fmt.Println("---------------")
 	fmt.Println("5) Salir")
+	fmt.Println("---------------")
 	fmt.Printf("Eleccion: ")
 
 	fmt.Scanf("%d", &respuesta)

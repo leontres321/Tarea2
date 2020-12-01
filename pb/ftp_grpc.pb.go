@@ -446,7 +446,7 @@ var _LOG_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LOGDistribuidoClient interface {
-	EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error)
+	EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Respuesta, error)
 	SolicitarUbicacionD(ctx context.Context, in *Nombre, opts ...grpc.CallOption) (*Propuesta, error)
 	PedirLibrosD(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListaLibros, error)
 }
@@ -459,8 +459,8 @@ func NewLOGDistribuidoClient(cc grpc.ClientConnInterface) LOGDistribuidoClient {
 	return &lOGDistribuidoClient{cc}
 }
 
-func (c *lOGDistribuidoClient) EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Propuesta, error) {
-	out := new(Propuesta)
+func (c *lOGDistribuidoClient) EnviarPropuestaD(ctx context.Context, in *Propuesta, opts ...grpc.CallOption) (*Respuesta, error) {
+	out := new(Respuesta)
 	err := c.cc.Invoke(ctx, "/ftp.LOGDistribuido/EnviarPropuestaD", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -490,7 +490,7 @@ func (c *lOGDistribuidoClient) PedirLibrosD(ctx context.Context, in *Empty, opts
 // All implementations must embed UnimplementedLOGDistribuidoServer
 // for forward compatibility
 type LOGDistribuidoServer interface {
-	EnviarPropuestaD(context.Context, *Propuesta) (*Propuesta, error)
+	EnviarPropuestaD(context.Context, *Propuesta) (*Respuesta, error)
 	SolicitarUbicacionD(context.Context, *Nombre) (*Propuesta, error)
 	PedirLibrosD(context.Context, *Empty) (*ListaLibros, error)
 	mustEmbedUnimplementedLOGDistribuidoServer()
@@ -500,7 +500,7 @@ type LOGDistribuidoServer interface {
 type UnimplementedLOGDistribuidoServer struct {
 }
 
-func (UnimplementedLOGDistribuidoServer) EnviarPropuestaD(context.Context, *Propuesta) (*Propuesta, error) {
+func (UnimplementedLOGDistribuidoServer) EnviarPropuestaD(context.Context, *Propuesta) (*Respuesta, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EnviarPropuestaD not implemented")
 }
 func (UnimplementedLOGDistribuidoServer) SolicitarUbicacionD(context.Context, *Nombre) (*Propuesta, error) {

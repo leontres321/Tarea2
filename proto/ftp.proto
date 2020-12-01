@@ -22,7 +22,7 @@ service LOG{
 }
 
 service LOGDistribuido{
-  rpc EnviarPropuestaD(Propuesta) returns (Propuesta);
+  rpc EnviarPropuestaD(Propuesta) returns (Respuesta);
   rpc SolicitarUbicacionD(Nombre) returns (Propuesta);
   rpc PedirLibrosD(Empty) returns (ListaLibros);
 }
@@ -50,8 +50,7 @@ message Propuesta{
 }
 
 message Aviso{
-  float tiempo = 1;
-  int32 id = 2;
+  int32 tiempo = 1;
 }
 
 message ListaLibros{

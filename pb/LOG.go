@@ -3,6 +3,7 @@ package pb
 import (
 	"golang.org/x/net/context"
 	"log"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
@@ -14,18 +15,17 @@ type NameNode struct {
 }
 
 func (s *NameNode) EnviarPropuesta(ctx context.Context, p *Propuesta) (*Propuesta, error) {
-	var NuevaPropuesta Propuesta
+	var NuevaPropuesta *Propuesta
 	//aqui se pude modificar la propuesta, verificar errores, etc
-	//...
-	//...
-	NuevaPropuesta = *p
+
+	NuevaPropuesta, _ = RevisarPropuesta(p)
+
 	//guaradar el nombre del libro y la ubicacion de las partes
 	s.Libros = append(s.Libros, NuevaPropuesta.NombreLibro)
 	s.Ubicaciones = append(s.Ubicaciones, NuevaPropuesta.Lista)
 
 	LogDistribucion(s)
-
-	return &NuevaPropuesta, nil
+	return NuevaPropuesta, nil
 }
 
 func (s *NameNode) SolicitarUbicacion(ctx context.Context, n *Nombre) (*Propuesta, error) {
@@ -41,6 +41,13 @@ func (s *NameNode) SolicitarUbicacion(ctx context.Context, n *Nombre) (*Propuest
 }
 
 func (s *NameNode) mustEmbedUnimplementedLOGServer() {}
+
+func (s *NameNode) PedirLibros(ctx context.Context, e *Empty) (*ListaLibros, error) {
+	var listaLibros ListaLibros
+	listaLibros.NombreLibro = s.Libros
+	listaLibros.CantLibros = uint64(len(s.Libros))
+	return &listaLibros, nil
+}
 
 ///Le agrega texto al final y si el archivo no existe lo crea
 func LogDistribucion(s *NameNode) {
@@ -67,9 +74,30 @@ func LogDistribucion(s *NameNode) {
 	}
 }
 
-func (s *NameNode) PedirLibros(ctx context.Context, e *Empty) (*ListaLibros, error) {
-	var listaLibros ListaLibros
-	listaLibros.NombreLibro = s.Libros
-	listaLibros.CantLibros = uint64(len(s.Libros))
-	return &listaLibros, nil
+func RevisarPropuesta(p *Propuesta) (*Propuesta, error) {
+	v := rand.Float64()
+
+	//Rechazar propuesta
+	if v < 10 {
+		largo := len(p.Lista)
+		random := rand.Intn(3)
+
+		var nuevaPropuesta Propuesta
+		nuevaPropuesta.Lista = ""
+		nuevaPropuesta.NombreLibro = p.NombreLibro
+
+		for i := 0; i < largo; i++ {
+			if random == 0 {
+				nuevaPropuesta.Lista += "0"
+			} else if random == 1 {
+				nuevaPropuesta.Lista += "1"
+			} else {
+				nuevaPropuesta.Lista += "2"
+			}
+		}
+
+		return &nuevaPropuesta, nil
+	}
+	//todo gud
+	return p, nil
 }

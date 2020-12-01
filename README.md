@@ -1,13 +1,13 @@
 # Tarea2
+## Ejecución del código
+En todas las maquinas se debe utilizar el comando *make run* y ahí se preguntará
+como quiere utilizar el algoritmo.
+
 ## Utilización de makefile
 - make run: comienza la ejecución de la tarea, para todo tipo de máquina
 - make gen: genera archivos pb
 - make clean: elimina archivos pb
 - make remove: elimina todas las partes de libros 
-
-## Ejecución del código
-En todas las maquinas se debe utilizar el comando *make run* y ahí se preguntará
-como quiere utilizar el algoritmo.
 
 ### Distribución de máquinas:
 
