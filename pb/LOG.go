@@ -4,6 +4,7 @@ import (
 	"golang.org/x/net/context"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -53,11 +54,14 @@ func LogDistribucion(s *NameNode) {
 
 	posUltimoLibro := len(s.Libros) - 1
 
-	if _, err := file.WriteString(strings.TrimSpace(s.Libros[posUltimoLibro] + " " + string(len(s.Ubicaciones[posUltimoLibro])))); err != nil {
+	if _, err := file.WriteString(strings.TrimSpace(s.Libros[posUltimoLibro]+" "+string(len(s.Ubicaciones[posUltimoLibro]))) + "\n"); err != nil {
 		log.Println(err)
 	}
 
 	for i := 0; i < len(s.Ubicaciones[posUltimoLibro]); i++ {
-		log.Printf("parte_" + string(i+1) + " " + string(s.Ubicaciones[posUltimoLibro][i]) + "\n")
+		//log.Printf("parte_" + strconv.Itoa(i+1) + " " + string(s.Ubicaciones[posUltimoLibro][i]) + "\n")
+		if _, err := file.WriteString("parte_" + strconv.Itoa(i+1) + " " + string(s.Ubicaciones[posUltimoLibro][i]) + "\n"); err != nil {
+			log.Println(err)
+		}
 	}
 }
