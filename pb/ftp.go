@@ -30,7 +30,16 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 			//enviar a otras maquinas y escribir las partes que se queda esta
 		}
 	} else {
-		// Guardarlo en disco
+		//TODO: revisar si create funciona asi, ademas de write file porque sino
+		//quedara un problema
+		filename = s.List_Chunk[:len(s.List_Chunk)-1].Name
+		_, err := os.Create("./partes/" + filename)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(0)
+		}
+		ioutil.WriteFile(filename, s.List_Chunk[:len(s.List_Chunk)-1].Chunk, os.ModeAppend)
 	}
 
 	return nil, nil
