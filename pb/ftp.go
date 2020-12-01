@@ -1,6 +1,7 @@
 package pb
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -135,9 +136,30 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 }
 
 func (s *DataNode) Descargar(ctx context.Context, n *Nombre) (*Chunk, error) {
-	//var ParteEnviar Chunk
-	//mensaje.Chunk =
-	return nil, nil
+	newFileChunk, err := os.Open("partes/" + n.Text)
+	if err != nil {
+		fmt.Println("archivo"+n.Text+"no exite  err:", err)
+		return nil, nil
+	}
+	defer newFileChunk.Close()
+	chunkInfo, err := newFileChunk.Stat()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(6)
+	}
+	var chunkSize int64 = chunkInfo.Size()
+	chunkBufferBytes := make([]byte, chunkSize)
+	/*
+		reader := bufio.NewReader(newFileChunk)
+		_, err = reader.Read(chunkBufferBytes)
+
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(7)
+			}
+	*/
+
+	return &Chunk{Chunk: chunkBufferBytes}, nil
 }
 
 func (s *DataNode) mustEmbedUnimplementedFTPServer() {}

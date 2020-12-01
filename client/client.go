@@ -2,8 +2,9 @@ package client
 
 import (
 	"Tarea2/pb"
-	"bufio"
 	"fmt"
+	"log"
+	"strings"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -116,13 +117,24 @@ func Carga(algoritmo int8) {
 
 func Descarga(algoritmo int8) {
 	var nombre string
-	var partes uint64
 
 	fmt.Printf("\nIngrese el nombre del libro a bajar: ")
 	fmt.Scanf("%s", &nombre)
 
 	//Preguntar a NameNode si existe y preguntar cantidad de partes
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
+	c := pb.NewLOGClient(conn)
+	var n pb.Nombre
+	n.Text = strings.TrimSpace(nombre)
+	p, err := c.SolicitarUbicacion(context.Background(), &n)
 
+	if p == nil {
+		fmt.Println("no exite el archivo")
+		os.Exit(0)
+	}
+
+	partes := len(p.Lista)
 	//Asumiendo que existe
 	_, err := os.Create(nombre)
 
@@ -138,41 +150,80 @@ func Descarga(algoritmo int8) {
 		os.Exit(4)
 	}
 
+	var ftps [3]FTPClient
+	var connftp1 *grpc.ClientConn
+	var connftp2 *grpc.ClientConn
+	var connftp3 *grpc.ClientConn
+
+	//NameNode Conexion
+	connlog1, err := grpc.Dial("dist41:9000", grpc.WithInsecure())
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	logs := NewLOGClient(connlog1)
+
+	//DataNode 1  dist42 conexion
+	connftp1, err = grpc.Dial("dist42:9000", grpc.WithInsecure())
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	ftps[0] = NewFTPClient(connftp1)
+
+	//DataNode 2  dist43 conexion
+	connftp2, err = grpc.Dial("dist43:9000", grpc.WithInsecure())
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	ftps[1] = NewFTPClient(connftp2)
+	//DataNode 3  dist44 conexion
+	connftp3, err = grpc.Dial("dist44:9000", grpc.WithInsecure())
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	ftps[2] = NewFTPClient(connftp3)
+
 	var writePosition int64 = 0
 
-	for j := uint64(0); j < partes; j++ {
+	for i := 0; i < len(p.Lista); i++ {
 		currentChunkFileName := nombre + "_" + strconv.FormatUint(j+1, 10)
+		nodo, _ := strconv.Atoi(p.Lista[i : i+1])
+		chunkRecibido, err := ftps[nodo].Descargar(context.Background(), pb.Nombre{Text: currentChunkFileName})
 
-		newFileChunk, err := os.Open(currentChunkFileName)
+		/*newFileChunk, err := os.Open(currentChunkFileName)
 
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(5)
-		}
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(5)
+				}
 
-		defer newFileChunk.Close()
+				defer newFileChunk.Close()
 
-		chunkInfo, err := newFileChunk.Stat()
+				chunkInfo, err := newFileChunk.Stat()
 
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(6)
-		}
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(6)
+				}
+		        // bytes cantidad
+				var chunkSize int64 = chunkInfo.Size()
+				chunkBufferBytes := make([]byte, chunkSize)
 
-		var chunkSize int64 = chunkInfo.Size()
-		chunkBufferBytes := make([]byte, chunkSize)
 
-		writePosition = writePosition + chunkSize
+				writePosition = writePosition + chunkSize
 
-		reader := bufio.NewReader(newFileChunk)
-		_, err = reader.Read(chunkBufferBytes)
+				/*reader := bufio.NewReader(newFileChunk)
+				_, err = reader.Read(chunkBufferBytes)
 
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(7)
-		}
+				if err != nil {
+					fmt.Println(err)
+					os.Exit(7)
+				}*/
 
-		_, err = file.Write(chunkBufferBytes)
+		_, err = file.Write(chunkRecibido.Chunk)
 
 		if err != nil {
 			fmt.Println(err)
@@ -181,7 +232,7 @@ func Descarga(algoritmo int8) {
 
 		file.Sync()
 
-		chunkBufferBytes = nil
+		//chunkBufferBytes = nil
 	}
 	fmt.Println("Libro descargado")
 

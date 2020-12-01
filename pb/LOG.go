@@ -27,10 +27,10 @@ func (s *NameNode) SolicitarUbicacion(ctx context.Context, n *Nombre) (*Propuest
 	for i, v := range s.Libros {
 		if n.Text == v {
 			UbicacionesLibro.Lista = s.Ubicaciones[i]
-			break
+			return &UbicacionesLibro, nil
 		}
 	}
-	return &UbicacionesLibro, nil
+	return nil, nil
 }
 
 func (s *NameNode) mustEmbedUnimplementedLOGServer() {}
