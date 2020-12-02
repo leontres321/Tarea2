@@ -108,14 +108,15 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		//NombreParte := "partes/" + c.Name
 		log.Println("guardando " + NombreParte + "...")
 		//crear archivo
-		f, err := os.Create(NombreParte)
-		if err != nil {
-			log.Println(err)
-			os.Exit(3)
-		}
-		f.Close()
-
-		file, err := os.OpenFile(NombreParte, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+		/*
+			f, err := os.Create(NombreParte)
+			if err != nil {
+				log.Println(err)
+				os.Exit(3)
+			}
+			f.Close()
+		*/
+		file, err := os.OpenFile(NombreParte, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 		if err != nil {
 			log.Println(err)
 			os.Exit(4)
