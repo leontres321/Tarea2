@@ -46,6 +46,13 @@ func DataNode(algoritmo int8) {
 }
 
 func NameNode(algoritmo int8) {
+	//Genera el log vacio, si se muere la maquina, se mueren los libros
+	myfile, e := os.Create("Log.txt")
+	if e != nil {
+		log.Fatal(e)
+	}
+	myfile.Close()
+
 	//Crear server NameNode puerto 9000
 	lis, err := net.Listen("tcp", ":9000")
 	if err != nil {
