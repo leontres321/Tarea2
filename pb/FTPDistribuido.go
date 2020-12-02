@@ -130,7 +130,7 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				//envia el chunk obtenido al nodo segun propuesta
 				ChunkEnviar.Cliente = false
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
-				_, _ := ftps[nodo].EnviarD(context.Background(), &ChunkEnviar)
+				_, _ = ftps[nodo].EnviarD(context.Background(), &ChunkEnviar)
 				//log.Println("Se enviaron todos los chunks, tenga un buen dia")
 			}
 		}
