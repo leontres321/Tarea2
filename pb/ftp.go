@@ -94,7 +94,8 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				//envia el chunk obtenido al nodo segun propuesta
 				ChunkEnviar.Cliente = false
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
-				_, _ = ftps[nodo].Enviar(context.Background(), &ChunkEnviar)
+				r, _ := ftps[nodo].Enviar(context.Background(), &ChunkEnviar)
+				log.Println(r.Gud)
 			}
 			tiempito2 := time.Since(tiempito)
 			fmt.Println("Tiempo inicial: ", tiempito)

@@ -99,7 +99,10 @@ func Carga(algoritmo int8) {
 			os.Exit(1)
 		}
 
-		fmt.Println(resp.Gud)
+		fmt.Println("Chunk enviado")
+		//shh
+		if resp.Gud == true {
+		}
 	}
 
 }

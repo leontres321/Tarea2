@@ -130,7 +130,8 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				//envia el chunk obtenido al nodo segun propuesta
 				ChunkEnviar.Cliente = false
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
-				_, _ = ftps[nodo].EnviarD(context.Background(), &ChunkEnviar)
+				r, _ := ftps[nodo].EnviarD(context.Background(), &ChunkEnviar)
+				log.Println(r.Gud)
 				//log.Println("Se enviaron todos los chunks, tenga un buen dia")
 			}
 		}
@@ -140,7 +141,6 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 	} else {
 		// Guardarlo en disco
 		NombreParte := "partes/" + c.Name + "_" + strconv.Itoa(int(c.ThisPart))
-		//NombreParte := "partes/" + c.Name
 		log.Println("guardando " + NombreParte + "...")
 		//crear archivo
 		f, err := os.Create(NombreParte)
