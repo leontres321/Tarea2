@@ -8,6 +8,7 @@ import (
 
 	"golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
+	"time"
 )
 
 var IPNAME string = "10.6.40.181"
@@ -66,7 +67,10 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		return &resp, nil
 	}
 
+	tiempito := time.Now()
+
 	if c.Cliente == true {
+
 		// guarda los chunks en memoria
 		s.List_Chunk = append(s.List_Chunk, *c)
 		if c.Last == true {
@@ -92,19 +96,12 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
 				_, _ = ftps[nodo].Enviar(context.Background(), &ChunkEnviar)
 			}
+			tiempito2 := time.Since(tiempito)
+			fmt.Println("Tiempo inicial: ", tiempito)
+			fmt.Println("Tiempo transcurrido: ", tiempito2)
 
 		}
 	} else {
-		//TODO: revisar si create funciona asi, ademas de write file porque sino
-		//quedara un problema
-		/*filename = s.List_Chunk[:len(s.List_Chunk)-1].Name
-		_, err := os.Create("./partes/" + filename)
-		if err != nil {
-			log.Println(err)
-			os.Exit(0)
-		}
-		ioutil.WriteFile(filename, s.List_Chunk[:len(s.List_Chunk)-1].Chunk, os.ModeAppend)
-		*/
 		// Guardarlo en disco
 		NombreParte := "partes/" + c.Name + "_" + strconv.Itoa(int(c.ThisPart))
 		//NombreParte := "partes/" + c.Name
@@ -149,15 +146,6 @@ func (s *DataNode) Descargar(ctx context.Context, n *Nombre) (*Chunk, error) {
 	var chunkSize int64 = chunkInfo.Size()
 	chunkBufferBytes := make([]byte, chunkSize)
 	newFileChunk.Read(chunkBufferBytes)
-	/*
-		reader := bufio.NewReader(newFileChunk)
-		_, err = reader.Read(chunkBufferBytes)
-
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(7)
-			}
-	*/
 
 	return &Chunk{Chunk: chunkBufferBytes}, nil
 }

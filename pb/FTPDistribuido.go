@@ -70,6 +70,8 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 
 	var p2 Propuesta
 
+	tiempito := time.Now()
+
 	if c.Cliente == true {
 		s.List_Chunk = append(s.List_Chunk, *c)
 		if c.Last == true {
@@ -129,9 +131,12 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				ChunkEnviar.Cliente = false
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
 				_, _ = ftps[nodo].EnviarD(context.Background(), &ChunkEnviar)
-				log.Println("Se enviaron todos los chunks, tenga un buen dia")
+				//log.Println("Se enviaron todos los chunks, tenga un buen dia")
 			}
 		}
+		tiempito2 := time.Since(tiempito)
+		fmt.Println("Tiempo inicial: ", tiempito)
+		fmt.Println("Tiempo transcurrido: ", tiempito2)
 	} else {
 		// Guardarlo en disco
 		NombreParte := "partes/" + c.Name + "_" + strconv.Itoa(int(c.ThisPart))

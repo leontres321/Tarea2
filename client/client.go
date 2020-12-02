@@ -9,7 +9,6 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	//"io/ioutil"
 	"math"
 	"os"
 	"strconv"
@@ -78,16 +77,6 @@ func Carga(algoritmo int8) {
 		file.Read(partBuffer)
 
 		fileName := nombre
-
-		/*_, err := os.Create(fileName)
-
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(2)
-		}
-
-		ioutil.WriteFile(fileName, partBuffer, os.ModeAppend)
-		*/
 
 		var mensaje pb.Chunk
 
@@ -198,37 +187,6 @@ func Descarga(algoritmo int8) {
 		currentChunkFileName := nombre + "_" + strconv.FormatUint(uint64(i+1), 10)
 		nodo, _ := strconv.Atoi(p.Lista[i : i+1])
 		chunkRecibido, err := ftps[nodo].Descargar(context.Background(), &pb.Nombre{Text: currentChunkFileName})
-
-		/*newFileChunk, err := os.Open(currentChunkFileName)
-
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(5)
-				}
-
-				defer newFileChunk.Close()
-
-				chunkInfo, err := newFileChunk.Stat()
-
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(6)
-				}
-		        // bytes cantidad
-				var chunkSize int64 = chunkInfo.Size()
-				chunkBufferBytes := make([]byte, chunkSize)
-
-
-				writePosition = writePosition + chunkSize
-
-				/*reader := bufio.NewReader(newFileChunk)
-				_, err = reader.Read(chunkBufferBytes)
-
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(7)
-				}*/
-
 		_, err = file.Write(chunkRecibido.Chunk)
 
 		if err != nil {
@@ -237,8 +195,6 @@ func Descarga(algoritmo int8) {
 		}
 
 		file.Sync()
-
-		//chunkBufferBytes = nil
 	}
 	fmt.Println("Libro descargado")
 
