@@ -70,8 +70,6 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 
 	var p2 Propuesta
 
-	tiempito := time.Now()
-
 	if c.Cliente == true {
 		s.List_Chunk = append(s.List_Chunk, *c)
 		if c.Last == true {
@@ -134,22 +132,21 @@ func (s *DataNodeD) EnviarD(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				//log.Println("Se enviaron todos los chunks, tenga un buen dia")
 			}
 		}
-		tiempito2 := time.Since(tiempito)
-		fmt.Println("Tiempo inicial: ", tiempito)
-		fmt.Println("Tiempo transcurrido: ", tiempito2)
+
 	} else {
 		// Guardarlo en disco
 		NombreParte := "partes/" + c.Name + "_" + strconv.Itoa(int(c.ThisPart))
 		log.Println("guardando " + NombreParte + "...")
 		//crear archivo
-		f, err := os.Create(NombreParte)
-		if err != nil {
-			log.Println(err)
-			os.Exit(3)
-		}
-		f.Close()
-
-		file, err := os.OpenFile(NombreParte, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+		/*
+			f, err := os.Create(NombreParte)
+			if err != nil {
+				log.Println(err)
+				os.Exit(3)
+			}
+			f.Close()
+		*/
+		file, err := os.OpenFile(NombreParte, os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 		if err != nil {
 			log.Println(err)
 			os.Exit(4)

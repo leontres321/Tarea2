@@ -67,8 +67,6 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 		return &resp, nil
 	}
 
-	tiempito := time.Now()
-
 	if c.Cliente == true {
 
 		// guarda los chunks en memoria
@@ -96,9 +94,6 @@ func (s *DataNode) Enviar(ctx context.Context, c *Chunk) (*Respuesta, error) {
 				nodo, _ := strconv.Atoi(p.Lista[i : i+1])
 				_, _ = ftps[nodo].Enviar(context.Background(), &ChunkEnviar)
 			}
-			tiempito2 := time.Since(tiempito)
-			fmt.Println("Tiempo inicial: ", tiempito)
-			fmt.Println("Tiempo transcurrido: ", tiempito2)
 
 		}
 	} else {

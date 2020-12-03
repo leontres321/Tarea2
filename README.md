@@ -1,4 +1,8 @@
-# Tarea2
+# Tarea2 (NN)
+### Participantes
+- Leandro Cerna 201573552-2
+- Leonardo Sobarzo 201573584-0
+
 ### Ejecución del código
 En todas las maquinas se debe utilizar el comando *make run* y ahí se preguntará
 como quiere utilizar el algoritmo.

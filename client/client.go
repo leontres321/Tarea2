@@ -59,8 +59,6 @@ func Carga(algoritmo int8) {
 		os.Exit(1)
 	}
 
-	defer file.Close()
-
 	fileInfo, _ := file.Stat()
 
 	var fileSize int64 = fileInfo.Size()
@@ -99,12 +97,13 @@ func Carga(algoritmo int8) {
 			os.Exit(1)
 		}
 
-		fmt.Println("Chunk enviado")
+		fmt.Println("Chunk enviado numero: ", i)
 		//shh
 		if resp.Gud == true {
 		}
 	}
 
+	file.Close()
 }
 
 func Descarga(algoritmo int8) {
